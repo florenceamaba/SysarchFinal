@@ -29,7 +29,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-const db = new sqlite3.Database("users.db", (err) => {
+const db = new sqlite3.Database("sho.db", (err) => {
     if (err) {
         console.error(err.message);
     } else {
