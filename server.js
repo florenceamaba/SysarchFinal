@@ -85,6 +85,14 @@ CREATE TABLE IF NOT EXISTS feedback (
     message TEXT
 )`);
 
+db.run(`
+CREATE TABLE IF NOT EXISTS announcements (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    message TEXT,
+    createdAt TEXT,
+    isRead INTEGER DEFAULT 0
+)`);
+
 
 //           ROUTES                   //
 
@@ -279,8 +287,9 @@ app.post("/sit-in", (req, res) => {
 });
 
 // time out a sit-in
-app.post("/time-out", (req, res) => {
-    const { idNumber, sitInId } = req.body;
+app.post(["/time-out", "/time-out/:sitInId"], (req, res) => {
+    const idNumber = req.body.idNumber;
+    const sitInId  = req.params.sitInId || req.body.sitInId;
     const timeOut = new Date().toISOString();
 
     db.run(
@@ -415,6 +424,25 @@ app.get("/api/sitin-stats", (req, res) => {
             return res.status(500).json({ error: err.message });
         }
 
+        res.json(rows);
+    });
+});
+
+// Post announcement
+app.post("/api/announcements", (req, res) => {
+    const { message } = req.body;
+    if (!message) return res.status(400).json({ error: "Message is required" });
+    const createdAt = new Date().toISOString();
+    db.run(`INSERT INTO announcements (message, createdAt) VALUES (?, ?)`, [message, createdAt], function(err) {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ message: "Announcement posted!" });
+    });
+});
+
+// Get all announcements
+app.get("/api/announcements", (req, res) => {
+    db.all(`SELECT * FROM announcements ORDER BY createdAt DESC`, [], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
         res.json(rows);
     });
 });

@@ -132,7 +132,49 @@ window.onload = function () {
 
         sessionStorage.setItem("adminWelcomeShown", "true");
     }
+    loadAnnouncements();
 };
+
+async function postAnnouncement() {
+    const text = document.getElementById('announcementText').value.trim();
+    if (!text) return Swal.fire('Warning', 'Please enter an announcement.', 'warning');
+
+    try {
+        const res = await fetch('http://localhost:3000/api/announcements', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: text })
+        });
+
+        if (res.ok) {
+            await Swal.fire({ icon: 'success', title: 'Announcement posted!', timer: 1500, showConfirmButton: false });
+            document.getElementById('announcementText').value = '';
+            loadAnnouncements();
+        } else {
+            Swal.fire('Error', 'Failed to post announcement.', 'error');
+        }
+    } catch (e) {
+        Swal.fire('Error', 'Server error.', 'error');
+    }
+}
+
+async function loadAnnouncements() {
+    try {
+        const res  = await fetch('http://localhost:3000/api/announcements');
+        const data = await res.json();
+        const list = document.getElementById('announcementList');
+        if (!data.length) {
+            list.innerHTML = '<p style="color:#aaa;font-size:13px;">No announcements yet.</p>';
+            return;
+        }
+        list.innerHTML = data.map(a => `
+            <div class="announcement-item">
+                <small>CCS Admin | ${new Date(a.createdAt).toLocaleDateString()}</small>
+                <p>${a.message}</p>
+            </div>
+        `).join('');
+    } catch (e) { console.error('Failed to load announcements:', e); }
+}
 
 // LOGOUT
 function logout() {

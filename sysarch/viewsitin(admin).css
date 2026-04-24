@@ -138,13 +138,13 @@ thead tr {
 
 th {
     padding: 15px;
-
+    background-color: #2c3e70;
     text-align: left;
     font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
 
-    color: #0056b3;
+    color: #ffffff;
     border-bottom: 2px solid #eee;
 }
 

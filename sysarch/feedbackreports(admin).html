@@ -243,10 +243,10 @@
             <li><a href="admin-dashboard.html"><i class="fa fa-home"></i> Home</a></li>
             <li><a href="javascript:void(0)" onclick="openSearchModal()"><i class="fa fa-search"></i> Search</a></li>
             <li><a href="students(admin).html"><i class="fa fa-users"></i> Students</a></li>
-            <li><a href="javascript:void(0)" onclick="openGenericSitInForm()"><i class="fa fa-laptop"></i> Sit-in</a></li>
+            <li><a href="sitin(admin).html"><i class="fa fa-laptop"></i> Sit-in</a></li>
             <li><a href="viewsitin(admin).html"><i class="fa fa-list-alt"></i> View Sit-in Records</a></li>
             <li><a href="sitinreports(admin).html"><i class="fa fa-bar-chart"></i> Sit-in Reports</a></li>
-            <li><a href="feedbackreports(admin).html"><i class="fa fa-comments"></i> Feedback Reports</a></li>
+            <li><a href="feedbackreports(admin).html" class="active"><i class="fa fa-comments"></i> Feedback Reports</a></li>
             <li><a href="adminreservation(admin).html"><i class="fa fa-calendar"></i> Reservation</a></li>
             <li><a href="javascript:void(0)" onclick="logout()" class="logout"><i class="fa fa-sign-in"></i> Log out</a></li>
         </ul>
@@ -283,52 +283,6 @@
         </div>
     </div>
 
-    <!-- Generic Sit-In Modal -->
-    <div id="genericSitInModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Confirm Sit-In for <span id="displayStudentName">Student</span></h2>
-                <button class="close-btn" onclick="closeModal('genericSitInModal')" style="background:none;border:none;color:white;cursor:pointer;font-size:20px;">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-row">
-                    <label>ID Number:</label>
-                    <input type="text" id="genIdNumber" placeholder="Enter ID Number" oninput="autoFillStudent()">
-                </div>
-                <div class="form-row">
-                    <label>Full Name:</label>
-                    <input type="text" id="genFullName" placeholder="Student Name" readonly>
-                </div>
-                <div class="form-row">
-                    <label>Purpose:</label>
-                    <select id="genPurpose">
-                        <option value="C Programming">C Programming</option>
-                        <option value="Java Projects">Java Projects</option>
-                        <option value="Python/Data Science">Python/Data Science</option>
-                        <option value="Web Development">Web Development</option>
-                    </select>
-                </div>
-                <div class="form-row">
-                    <label>Laboratory:</label>
-                    <select id="genLab">
-                        <option value="524">524</option>
-                        <option value="525">525</option>
-                        <option value="526">526</option>
-                        <option value="527">527</option>
-                        <option value="528">528</option>
-                    </select>
-                </div>
-                <div class="form-row">
-                    <label>Sessions Left:</label>
-                    <input type="text" id="genRemaining" placeholder="30" readonly>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn-cancel" onclick="closeModal('genericSitInModal')">Cancel</button>
-                <button type="button" class="btn-confirm" onclick="submitGenericSitIn(event)">Confirm Sit-In</button>
-            </div>
-        </div>
-    </div>
 
     <!-- Main Content -->
     <div class="reports-container">

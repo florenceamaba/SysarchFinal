@@ -122,6 +122,68 @@ document.addEventListener("DOMContentLoaded", () => {
     setInterval(updateTimer, 1000);
 });
 
+let readAnnouncementIds = JSON.parse(localStorage.getItem('readAnnouncements') || '[]');
+
+async function loadNotifications() {
+    try {
+        const res  = await fetch('http://localhost:3000/api/announcements');
+        const data = await res.json();
+
+        const unread = data.filter(a => !readAnnouncementIds.includes(a.id));
+        const badge  = document.getElementById('notifBadge');
+        const list   = document.getElementById('notifList');
+
+        badge.textContent = unread.length > 0 ? unread.length : '';
+        badge.style.display = unread.length > 0 ? 'inline-block' : 'none';
+
+        list.innerHTML = data.length === 0
+            ? '<p style="padding:15px;color:#aaa;font-size:13px;text-align:center;">No announcements.</p>'
+            : data.map(a => `
+                <div class="notif-item ${readAnnouncementIds.includes(a.id) ? 'read' : 'unread'}"
+                     onclick="markRead(${a.id})">
+                    <div class="notif-msg">${a.message}</div>
+                    <div class="notif-time">${new Date(a.createdAt).toLocaleString()}</div>
+                </div>
+              `).join('');
+    } catch (e) { console.error('Notification error:', e); }
+}
+
+function markRead(id) {
+    if (!readAnnouncementIds.includes(id)) {
+        readAnnouncementIds.push(id);
+        localStorage.setItem('readAnnouncements', JSON.stringify(readAnnouncementIds));
+        loadNotifications();
+    }
+}
+
+function markAllRead() {
+    fetch('http://localhost:3000/api/announcements')
+        .then(r => r.json())
+        .then(data => {
+            readAnnouncementIds = data.map(a => a.id);
+            localStorage.setItem('readAnnouncements', JSON.stringify(readAnnouncementIds));
+            loadNotifications();
+        });
+}
+
+function toggleNotifDropdown(e) {
+    e.preventDefault();
+    const dropdown = document.getElementById('notifDropdown');
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.notif-wrapper')) {
+        const dropdown = document.getElementById('notifDropdown');
+        if (dropdown) dropdown.style.display = 'none';
+    }
+});
+
+// Poll every 10 seconds
+loadNotifications();
+setInterval(loadNotifications, 10000);
+
 
 // 🔴 GLOBAL LOGOUT FUNCTION
 function logout(event) {
