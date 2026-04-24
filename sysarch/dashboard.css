@@ -12,7 +12,7 @@ body {
 
 
 .navbar {
-    background-color: #0056b3; 
+    background-color: #1d3d60; 
     color: white;
     padding: 20px ;
     display: flex;
@@ -82,7 +82,7 @@ body {
 }
 
 .card-header {
-    background-color: #0056b3;
+    background-color: #1d3d60;
     color: white;
     padding: 12px 15px;
     font-weight: bold;
@@ -121,7 +121,7 @@ body {
 .announcement-date {
     font-size: 25px;
     font-weight: bold;
-    color: #da0ca6;
+    color: #da0c0c;
 }
 
 .rules-text {
@@ -145,7 +145,7 @@ body {
 
 .timer-normal {
     background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
-    border-color: #66bb6a;
+    border-color: #01e70c;
 }
 
 .timer-warning {
@@ -170,7 +170,7 @@ body {
 
 .timer-icon {
     margin-right: 2px;
-    font-size: 28px;
+    font-size: 30px;
     line-height: 1;
 }
 
